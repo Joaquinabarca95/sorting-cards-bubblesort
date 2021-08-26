@@ -6,7 +6,9 @@ import "./style.css";
 let drawButton = document.querySelector(".drawBtn");
 let sortButton = document.querySelector(".sortBtn");
 drawButton.addEventListener("click", drawRandomCards);
-sortButton.addEventListener("click", bubbleSort);
+sortButton.addEventListener("click", function() {
+  bubbleSort(cards);
+});
 
 // funcion cantidad de cartas aleatoria drawbutton
 let inputAmount = document.querySelector(".amount");
@@ -39,33 +41,48 @@ function drawRandomCards() {
     let randomSuits = Math.floor(Math.random() * suits.length);
     return suits[randomSuits];
   }
-
-  // asignar valor cartas
-  function changeValue(value) {
-    if (value === 1) return "A";
-    if (value === 11) return "J";
-    if (value === 12) return "Q";
-    if (value === 13) return "K";
-    return value;
-  }
-  console.log("this are the unsorted cards", cards);
 }
 
+// asignar valor cartas
+function changeValue(value) {
+  if (value === 1) return "A";
+  if (value === 11) return "J";
+  if (value === 12) return "Q";
+  if (value === 13) return "K";
+  return value;
+}
+console.log("this are the unsorted cards", cards);
 // funcion orden de array para sortbutton
-function bubbleSort(arr) {
-  arr = cards;
-  let wall = arr.length - 1;
-  while (wall >= 0) {
+
+let parent = document.querySelector(".bubbleDiv");
+function bubbleSort(cards) {
+  let wall = cards.length - 1;
+  let count = 1;
+  while (wall > 0) {
     let index = 0;
     while (index < wall) {
-      if (arr[index].cardNumber > arr[index + 1].cardNumber) {
-        let aux = arr[index + 1];
-        arr[index + 1] = arr[index];
-        arr[index] = aux;
+      let newRow = document.createElement("div");
+      newRow.setAttribute("style", "display:flex");
+      newRow.style.alignItems = "center";
+      let rowNumber = document.createTextNode(`${count}`);
+      newRow.append(rowNumber);
+      parent.append(newRow);
+      if (cards[index].cardNumber > cards[index + 1].cardNumber) {
+        let aux = cards[index + 1];
+        cards[index + 1] = cards[index];
+        cards[index] = aux;
       }
+      for (let i = 0; i < cards.length; i++) {
+        let showCard = document.createElement("div");
+        showCard.classList.add("card", "number", cards[i].cardSuit);
+        showCard.setAttribute("style", "display:flex;");
+        showCard.innerHTML = changeValue(cards[i].cardNumber);
+        newRow.append(showCard);
+      }
+      count++;
       index++;
     }
     wall--;
   }
-  return arr;
+  return cards;
 }
