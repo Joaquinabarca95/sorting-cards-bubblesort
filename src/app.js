@@ -9,6 +9,8 @@ drawButton.addEventListener("click", drawRandomCards);
 sortButton.addEventListener("click", function() {
   bubbleSort(cards);
 });
+let resetButton = document.querySelector(".resetBtn");
+resetButton.addEventListener("click", reset);
 
 // funcion cantidad de cartas aleatoria drawbutton
 let inputAmount = document.querySelector(".amount");
@@ -17,6 +19,9 @@ let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
 function drawRandomCards() {
   let amount = parseInt(inputAmount.value);
+  let parent = document.querySelector(".cardsDiv");
+  parent.innerHTML = "";
+  cards = [];
   for (let i = 0; i < amount; i++) {
     let newCard = document.createElement("div");
     let cardSuit = randomSuitGenerator();
@@ -24,7 +29,6 @@ function drawRandomCards() {
     newCard.classList.add("card", "number", cardSuit);
     newCard.setAttribute("style", "display:flex;");
     newCard.innerHTML = changeValue(cardNumber);
-    let parent = document.querySelector(".cardsDiv");
     parent.append(newCard);
     cards.push({ cardSuit, cardNumber });
   }
@@ -54,10 +58,11 @@ function changeValue(value) {
 console.log("this are the unsorted cards", cards);
 // funcion orden de array para sortbutton
 
-let parent = document.querySelector(".bubbleDiv");
 function bubbleSort(cards) {
   let wall = cards.length - 1;
   let count = 1;
+  let parent = document.querySelector(".bubbleDiv");
+  parent.innerHTML = "";
   while (wall > 0) {
     let index = 0;
     while (index < wall) {
@@ -85,4 +90,12 @@ function bubbleSort(cards) {
     wall--;
   }
   return cards;
+}
+
+function reset() {
+  let drawParent = document.querySelector(".cardsDiv");
+  drawParent.innerHTML = "";
+  let bubbleParent = document.querySelector(".bubbleDiv");
+  bubbleParent.innerHTML = "";
+  inputAmount.value = "";
 }
